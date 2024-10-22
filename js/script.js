@@ -6,10 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tabsContent = document.querySelectorAll('.tabcontent'),
         tabsParent = document.querySelector('.tabheader__items');
 
-    // function hideTabContent() {
-    //     tabsContent.forEach(item => {
-    //         item.style.display = 'none';
-    //     });
 
     function hideTabContent() {
         tabsContent.forEach(item => {
@@ -22,27 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // function showTabContent(i = 0) {
-    //     tabsContent[i].style.display = 'block';
-    //     tabs[i].classList.add('tabheader__item_active');
-    // }
     function showTabContent(i = 0) {
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
-
-
-    // tabsParent.addEventListener('click', (event) => {
-    //     if (event.target && event.target.tagName == "DIV") {
-    //         event.stopPropagation()
-    //         const index = Array.from(tabs).indexOf(event.target);
-    //         if (index != '-1') {
-    //             hideTabContent();
-    //             showTabContent(index);
-    //         }
-    //     }
-    // });
 
     tabsParent.addEventListener('click', (event) => {
         const target = event.target;
