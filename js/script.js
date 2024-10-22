@@ -126,14 +126,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Date 
 
-const newDate = document.querySelector('.promotion__descr');
+    const newDate = document.querySelector('.promotion__descr');
 
-newDate.innerHTML = " ";
+    newDate.innerHTML = " ";
 
-newDate.innerHTML = `Мы ценим каждого клиента и предлагаем вам стать одним из них на очень выгодных условиях. 
+    newDate.innerHTML = `Мы ценим каждого клиента и предлагаем вам стать одним из них на очень выгодных условиях. 
                     Каждому, кто закажет доставку питания на неделю, будет предоставлена скидка в размере <span>20%!</span>
                     <br><br>
                     Акция закончится 24 ноября в 00:00.`;
+
+    // modal window 
+
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal'),
+        modelClose = document.querySelector('[data-close]');
+
+    modalTrigger.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            modal.classList.add('show');
+            modal.classList.remove('hide');
+            document.body.style.overflow = "hidden";
+        });
+    });
+
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = "";
+    }
+
+    modelClose.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', (e) =>{
+        if ((e.code === "Escape" || "Delete") && modal.classList.contains('show')){
+            closeModal();
+            console.log('done');
+        }
+    });
+
 });
 
 
