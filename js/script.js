@@ -123,10 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setClock('.timer', deadline);
-});
 
-
-// Date 
+    // Date 
 
 const newDate = document.querySelector('.promotion__descr');
 
@@ -136,4 +134,6 @@ newDate.innerHTML = `Мы ценим каждого клиента и предл
                     Каждому, кто закажет доставку питания на неделю, будет предоставлена скидка в размере <span>20%!</span>
                     <br><br>
                     Акция закончится 24 ноября в 00:00.`;
+});
+
 
