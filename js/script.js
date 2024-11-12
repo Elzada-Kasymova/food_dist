@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
+    // console.log ('good');
 
     // tabs---------------------------------------------------
     const tabs = document.querySelectorAll('.tabheader__item'),
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // const modalTimerId = setTimeout(openModel, 5000);
+    const modalTimerId = setTimeout(openModel, 5000);
 
     function showModalByScrolling() {
         if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
@@ -237,6 +238,49 @@ document.addEventListener("DOMContentLoaded", () => {
         'menu__item',
         'big'
     ).render();
+
+    //forms 
+
+    const forms =  document.querySelectorAll('form');
+    const message = {
+        loading: "загрузка", 
+        sucsses:" спасибо , скоро с вмаи свяжемся", 
+        fail:"что -то пошло не так"
+    };
+
+    forms.forEach(item =>{
+        postData(item)
+    });
+
+    function postData (forms){
+
+        forms.addEventListener('submit', (e)=>{
+            e.preventDefault();
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status'); 
+            statusMessage.textContent = message.loading;
+            forms.append(statusMessage); 
+            
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+
+            request.setRequestHeader('Content-type', ' multipart/form-data');
+            const formData = new FormData (form)
+
+            request.send(formData);
+            request.addEventListener('load', () =>{
+                if (request.status === 200){
+                    console.log (request.response);
+                    statusMessage.textContent = message.sucsses;
+                }else{
+                    statusMessage.textContent = message.fail;
+                }
+            });
+        });
+    }
+
+    console.log ('good');
 
 });
 
