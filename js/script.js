@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
-    // console.log ('good');
+    
 
     // tabs---------------------------------------------------
     const tabs = document.querySelectorAll('.tabheader__item'),
@@ -119,51 +119,49 @@ document.addEventListener("DOMContentLoaded", () => {
     // modal window 
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modelClose = document.querySelector('[data-close]');
+    modal = document.querySelector('.modal'),
+    modalCloseBtn = document.querySelector('[data-close]');
 
-    function openModel() {
-        modal.classList.add('show');
-        modal.classList.remove('hide');
-        document.body.style.overflow = "hidden";
-        clearInterval(modalTimerId);
+modalTrigger.forEach(btn => {
+    btn.addEventListener('click', openModal);
+});
+
+function closeModal() {
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function openModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    clearInterval(modalTimerId);
+}
+
+modalCloseBtn.addEventListener('click', closeModal);
+
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
     }
+});
 
-    modalTrigger.forEach((btn) => {
-        btn.addEventListener('click', openModel);
-    });
-
-    function closeModal() {
-        modal.classList.add('hide');
-        modal.classList.remove('show');
-        document.body.style.overflow = "";
+document.addEventListener('keydown', (e) => {
+    if (e.code === "Escape" && modal.classList.contains('show')) { 
+        closeModal();
     }
+});
 
-    modelClose.addEventListener('click', closeModal);
+const modalTimerId = setTimeout(openModal, 300000);
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if ((e.code === "Escape" || "Delete") && modal.classList.contains('show')) {
-            closeModal();
-            console.log('done');
-        }
-    });
-
-    const modalTimerId = setTimeout(openModel, 5000);
-
-    function showModalByScrolling() {
-        if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
-            openModel();
-            removeEventListener('scroll', showModalByScrolling);
-        }
+function showModalByScroll() {
+    if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+        openModal();
+        window.removeEventListener('scroll', showModalByScroll);
     }
-
-    window.addEventListener('scroll', showModalByScrolling);
+}
+window.addEventListener('scroll', showModalByScroll);
 
     //class for card 
 
@@ -252,20 +250,31 @@ document.addEventListener("DOMContentLoaded", () => {
         postData(item)
     });
 
-    function postData (forms){
+    function postData (form){
 
-        forms.addEventListener('submit', (e)=>{
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const statusMessage = document.createElement('div');
             statusMessage.classList.add('status'); 
             statusMessage.textContent = message.loading;
-            forms.append(statusMessage); 
+            form.append(statusMessage); 
             
             const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
+            request.open('POST', 'js/server.php');
 
-            request.setRequestHeader('Content-type', ' multipart/form-data');
+            // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            // const formData = new FormData(form);
+
+            // const object = {};
+            // formData.forEach(function(value, key){
+            //     object[key] = value;
+            // });
+            // const json = JSON.stringify(object);
+
+            // request.send(json);
+            //отправка данных в виде json 
+
             const formData = new FormData (form)
 
             request.send(formData);
@@ -273,14 +282,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (request.status === 200){
                     console.log (request.response);
                     statusMessage.textContent = message.sucsses;
+                    form.reset();
+                    setTimeout(()=>{
+                        statusMessage.remove();
+                    },2000); 
                 }else{
                     statusMessage.textContent = message.fail;
                 }
             });
         });
     }
-
-    console.log ('good');
 
 });
 
